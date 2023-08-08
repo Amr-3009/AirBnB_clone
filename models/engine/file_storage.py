@@ -12,6 +12,7 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 
+
 class FileStorage():
     """
     File Storage class
@@ -39,7 +40,7 @@ class FileStorage():
     def save(self):
         """saves obj to json file"""
         with open(self.__file_path, mode="w+") as myFile:
-            return myFile.write(json.dumps({key: value.to_dict() for key, value 
+            return myFile.write(json.dumps({key: value.to_dict() for key, value
                                 in self.__objects.items()}))
 
     def reload(self):
