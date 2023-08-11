@@ -15,7 +15,7 @@ class TestRev(unittest.TestCase):
     """test for amentiy class"""
     def test_rev(self):
         review = Review()
-        self.assertIsInstance(review,Review)
+        self.assertIsInstance(review, Review)
         self.assertIsInstance(review, BaseModel)
         self.assertIsInstance(review.id, str)
         self.assertEqual(review.place_id, "")
