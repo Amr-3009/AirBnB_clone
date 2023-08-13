@@ -22,33 +22,33 @@ class FileStorage:
         _obj: dict that will store objects by class name
     """
 
-    _filepath = "file.json"
-    _obj = {}
+    __file_path = "file.json"
+    __objects = {}
 
     def all(self):
         """
         return method for all objects
         """
-        return FileStorage._obj
+        return FileStorage.__objects
 
     def new(self, obj):
         """
         sets key/value pair in dict
         Key format: <obj class name>.<id>
         """
-        FileStorage._obj["{}.{}".format(obj.__class__.__name__, obj.id)] = obj
+        FileStorage.__objects["{}.{}".format(obj.__class__.__name__, obj.id)] = obj
 
     def save(self):
         """saves obj to json file"""
-        obj_dict = FileStorage._obj
+        obj_dict = FileStorage.__objects
         obj_dict2 = {obj: obj_dict[obj].to_dict() for obj in obj_dict.keys()}
-        with open(FileStorage._filepath, "w") as f:
+        with open(FileStorage.__file_path, "w") as f:
             json.dump(obj_dict2, f)
 
     def reload(self):
         """loads saved ojects"""
         try:
-            with open(FileStorage._filepath) as f:
+            with open(FileStorage.__file_path) as f:
                 objdict = json.load(f)
                 for obj in objdict.values():
                     cls_name = o["__class__"]
