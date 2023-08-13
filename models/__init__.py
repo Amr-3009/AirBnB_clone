@@ -1,13 +1,8 @@
 #!/usr/bin/python3
 """
-init for storage
+__init__ dundar method for models dir
 """
-
 from models.engine.file_storage import FileStorage
 
 storage = FileStorage()
-
-try:
-    storage.reload()
-except FileNotFoundError:
-    pass
+storage.reload()
