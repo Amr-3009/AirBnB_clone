@@ -15,14 +15,15 @@ from models.review import Review
 
 
 def parser(arg):
-    #searches for text inside curly braces
+    # searches for text inside curly braces
     curly_text = re.search(r"\{(.*?)\}", arg)
-    #searches for text inside square brackets
+    # searches for text inside square brackets
     square_text = re.search(r"\[(.*?)\]", arg)
 
     if curly_text is None:
         if square_text is None:
-            return [i.strip(',') for i in split(arg)
+            return [i.strip(',') for i in split(arg)]
+
         else:
             var_a = split(arg[:square_text.span()[0]])
             var_b = [i.strip(',') for i in var_a]
@@ -137,7 +138,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, arg):
         """
-        Usage: display string representation of 
+        Usage: display string representation of
         all instances
         """
         arg_list = parser(arg)
@@ -154,7 +155,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_count(self, arg):
         """
-        Usage: count the number of instances 
+        Usage: count the number of instances
         in a given class
         """
         arg_list = parser(arg)
@@ -163,7 +164,6 @@ class HBNBCommand(cmd.Cmd):
             if arg_list[0] == obj.__class__.__name__:
                 count += 1
         print(count)
-
 
     def do_update(self, arg):
         """
@@ -201,11 +201,12 @@ class HBNBCommand(cmd.Cmd):
                 obj.__dict__[arg_list[2]] = val(arg_list[3])
             else:
                 obj.__dict__[arg_list[2]] = arg_list[3]
-            elif type(eval(arg_list[2])) == dict:
+        elif type(eval(arg_list[2])) == dict:
             obj = obj_dict["{}.{}".format(arg_list[0], arg_list[1])]
             for key, value in eval(arg_list[2]).items():
                 if (key in obj.__class__.__dict__.keys() and
-                        type(obj.__class__.__dict__[key]) in {str, int, float}):
+                        type(obj.__class__.__dict__[key]) in
+                        {str, int, float}):
                     val = type(obj.__class__.__dict__[key])
                     obj.__dict__[key] = val(value)
                 else:
