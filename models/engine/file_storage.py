@@ -13,40 +13,46 @@ from models.place import Place
 from models.review import Review
 
 
-class FileStorage():
+class FileStorage:
     """
     File Storage class
-    attrs:
-        __file_path: str to json file
-        __objects: dict that will store objects by class name
+
+    Attributes:
+        _filepath: str to json file
+        _obj: dict that will store objects by class name
     """
 
-    __file_path = "file.json"
-    __objects = {}
+    _filepath = "file.json"
+    _obj = {}
 
     def all(self):
         """
         return method for all objects
         """
-        return(self.__objects)
+        return FileStorage._obj
 
     def new(self, obj):
         """
         sets key/value pair in dict
         Key format: <obj class name>.<id>
         """
-        self.__objects["{}.{}".format(obj.__class__.__name__, obj.id)] = obj
+        FileStorage._obj["{}.{}".format(obj.__class__.__name__, obj.id)] = obj
 
     def save(self):
         """saves obj to json file"""
-        with open(self.__file_path, mode="w+") as myFile:
-            return myFile.write(json.dumps({key: value.to_dict() for key, value
-                                in self.__objects.items()}))
+        obj_dict = FileStorage._obj
+        obj_dict2 = {obj: obj_dict[obj].to_dict() for obj in obj_dict.keys()}
+        with open(FileStorage._filepath, "w") as f:
+            json.dump(obj_dict2, f)
 
     def reload(self):
         """loads saved ojects"""
-        if os.path.isfile(FileStorage.__file_path):
-            with open(FileStorage.__file_path, "r", encoding="utf-8") as js_f:
-                for key, obj in json.loads(js_f.read()).items():
-                    obj = eval(obj['__class__'])(**obj)
-                    FileStorage.__objects[key] = obj
+        try:
+            with open(FileStorage._filepath) as f:
+                objdict = json.load(f)
+                for obj in objdict.values():
+                    cls_name = o["__class__"]
+                    del o["__class__"]
+                    self.new(eval(cls_name)(**o))
+        except FileNotFoundError:
+            return
